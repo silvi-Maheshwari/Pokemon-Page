@@ -24,6 +24,7 @@ Filter by Type: Select one or more types from the filter options to display only
 Sort Pokémon: Click on buttons to sort Pokémon by name, type, or ID in ascending or descending order.
 Pagination: Use the "Next" and "Previous" buttons to navigate through pages, with each page displaying 8 Pokémon.
 
+Folder-Structure:-
 src/
 │
 ├── components/
