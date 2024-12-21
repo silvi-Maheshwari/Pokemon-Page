@@ -1,4 +1,4 @@
-#DEPLOY-LINK:---  https://pokemon-site-page.netlify.app/
+#DEPLOY-LINK:---  https://pokemon-website-page.netlify.app/
 # Pokemon-Page
 # Pokémon Pokedex
 
