@@ -19,7 +19,7 @@ A web application built with React that allows users to explore Pokémon data, s
 - **Tailwind CSS**: For styling and creating a responsive design.
 - **PokeAPI**: Used to fetch Pokémon data (https://pokeapi.co/).
 
-# DEPLOY-LINK:---  https://pokemon-website-page.netlify.app/
+## DEPLOY-LINK:---  https://pokemon-website-page.netlify.app/
 
 Usage:-
 Search Pokémon: Enter a Pokémon's name in the search input to filter the list by name.
