@@ -9,11 +9,13 @@ const PokedexGrid = ({ selectedTypes }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [sortField, setSortField] = useState('name');
     const [sortOrder, setSortOrder] = useState('asc');
+    const [isLoading, setIsLoading] = useState(false);
     const itemsPerPage = 8;
 
     const getData = () => {
+        setIsLoading(true); 
         axios
-            .get('https://pokeapi.co/api/v2/pokemon?limit=100') 
+            .get('https://pokeapi.co/api/v2/pokemon?limit=100')
             .then((res) => {
                 const pokemonResults = res.data.results;
 
@@ -23,9 +25,13 @@ const PokedexGrid = ({ selectedTypes }) => {
 
                 Promise.all(detailedPromises).then((detailedPokemon) => {
                     setPokemonCard(detailedPokemon);
+                    setIsLoading(false);
                 });
             })
-            .catch((err) => console.error('Error fetching Pokémon data:', err));
+            .catch((err) => {
+                console.error('Error fetching Pokémon data:', err);
+                setIsLoading(false);
+            });
     };
 
     useEffect(() => {
@@ -41,15 +47,14 @@ const PokedexGrid = ({ selectedTypes }) => {
             return matchesSearch && matchesTypes;
         });
 
-    
         const sortedFiltered = filtered.sort((a, b) => {
             if (sortField === 'name') {
                 return sortOrder === 'asc'
                     ? a.name.localeCompare(b.name)
                     : b.name.localeCompare(a.name);
             } else if (sortField === 'type') {
-                const typeA = a.types[0]?.type.name || ''; 
-                const typeB = b.types[0]?.type.name || ''; 
+                const typeA = a.types[0]?.type.name || '';
+                const typeB = b.types[0]?.type.name || '';
                 return sortOrder === 'asc'
                     ? typeA.localeCompare(typeB)
                     : typeB.localeCompare(typeA);
@@ -73,14 +78,11 @@ const PokedexGrid = ({ selectedTypes }) => {
     };
 
     const handlePrevious = () => {
-     setCurrentPage(currentPage - 1);
+        setCurrentPage(currentPage - 1);
     };
 
-    
-    
-
     const handleSortChange = (field) => {
-        setSortField(field); 
+        setSortField(field);
     };
 
     return (
@@ -114,21 +116,26 @@ const PokedexGrid = ({ selectedTypes }) => {
                 >
                     Sort by ID
                 </button>
-            
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 bg-red-300">
-                {currentItems.map((pokemon) => (
-                    <div key={pokemon.id}>
-                        <PokemonCard
-                            id={pokemon.id}
-                            name={pokemon.name}
-                            types={pokemon.types || []}
-                            image={pokemon.sprites?.front_default || ''}
-                        />
-                    </div>
-                ))}
-            </div>
+            {isLoading ? ( 
+                <div className="flex justify-center items-center p-4">
+                    <p>Loading...</p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 bg-red-300">
+                    {currentItems.map((pokemon) => (
+                        <div key={pokemon.id}>
+                            <PokemonCard
+                                id={pokemon.id}
+                                name={pokemon.name}
+                                types={pokemon.types || []}
+                                image={pokemon.sprites?.front_default || ''}
+                            />
+                        </div>
+                    ))}
+                </div>
+            )}
 
             <div className="flex justify-center items-center gap-4 p-4">
                 <button
